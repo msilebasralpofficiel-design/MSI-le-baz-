@@ -1,5 +1,20 @@
-const CACHE='msi-le-baz-v1';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./assets/msi-le-baz.jpg','./assets/msi-le-baz-adjatokpa-remix.mp3'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS))));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))));
-self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open('msi-le-baz-v1').then((cache) => {
+      return cache.addAll([
+        './index.html',
+        './manifest.webmanifest',
+        './msi-le-baz.jpg',
+        './piste.mp3'
+      ]);
+    })
+  );
+});
+
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
+});
