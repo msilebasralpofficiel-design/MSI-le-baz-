@@ -1,27 +1,81 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07101f"><meta name="description" content="Application officielle MSI le baz — musique, clips et actualités.">
-<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/msi-le-baz.jpg">
-<title>MSI le baz</title>
-<style>
-:root{--bg:#050a14;--card:#0d1728;--gold:#f4b400;--text:#f8fafc;--muted:#aab4c4}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#030712,#081426 55%,#030712);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}header{position:sticky;top:0;z-index:10;background:rgba(3,7,18,.88);backdrop-filter:blur(12px);padding:14px 18px;border-bottom:1px solid #1a2940;display:flex;align-items:center;justify-content:space-between}.brand{font-weight:900;letter-spacing:3px}.brand span{color:var(--gold)}button{border:0;border-radius:999px;padding:12px 16px;font-weight:800;background:var(--gold);color:#111;cursor:pointer}.hero{padding:22px 18px 10px}.poster{width:100%;border-radius:24px;display:block;box-shadow:0 18px 50px #0008}.intro{padding:22px 2px}.intro h1{font-size:36px;margin:0 0 6px}.intro p{color:var(--muted);margin:0}.section{padding:12px 18px 26px}.section h2{font-size:21px;margin:0 0 14px}.track{background:linear-gradient(145deg,#101d32,#0a1220);border:1px solid #1d2b42;border-radius:20px;padding:14px}.cover{width:82px;height:82px;border-radius:14px;object-fit:cover;float:left;margin-right:14px}.track h3{margin:5px 0 4px;font-size:18px}.track small{color:var(--muted)}audio{width:100%;margin-top:15px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tile{background:var(--card);border:1px solid #1d2b42;border-radius:18px;padding:18px;min-height:100px}.tile b{display:block;margin-bottom:7px}.tile span{color:var(--muted);font-size:13px}.install{display:none;margin:0 18px 20px;padding:15px;border:1px solid #4b3c13;background:#17170d;border-radius:18px}.install.show{display:block}.install p{margin:0 0 10px;color:#ddd}.footer{text-align:center;color:#7f8b9d;padding:20px 18px 40px;font-size:13px}
-</style></head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07101f">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>MSI le baz</title>
+  <style>
+    :root{--bg:#050a14;--card:#0d1728;--gold:#f4b41a;--text:#ffffff;}
+    body{background-color:var(--bg);color:var(--text);font-family:sans-serif;margin:0;padding:16px;display:flex;flex-direction:column;align-items:center;}
+    header{width:100%;text-align:center;padding:10px 0;font-size:1.5rem;font-weight:bold;}
+    header span{color:var(--gold);}
+    main{width:100%;max-width:400px;display:flex;flex-direction:column;gap:16px;align-items:center;}
+    .hero img.poster{width:100%;border-radius:12px;object-fit:cover;}
+    .intro{text-align:center;}
+    audio{width:100%;margin-top:10px;}
+    .install{display:none;width:100%;text-align:center;background:var(--card);padding:12px;border-radius:8px;}
+    button{background:var(--gold);color:#000;border:none;padding:10px 20px;font-weight:bold;border-radius:6px;cursor:pointer;margin-top:8px;}
+    footer{margin-top:30px;font-size:0.8rem;text-align:center;color:#888;}
+  </style>
+</head>
 <body>
-<header><div class="brand">MSI <span>LE BAZ</span></div><button id="installBtn" style="display:none">Installer</button></header>
-<main>
-<section class="hero"><img class="poster" src="assets/msi-le-baz.jpg" alt="MSI le baz"></section>
-<section class="intro"><h1>MSI le baz</h1><p>Même rêve, même combat. Bienvenue dans mon univers musical.</p></section>
-<div id="installBox" class="install"><p><strong>Installer MSI le baz sur ton téléphone</strong><br>Après la mise en ligne, appuie sur « Installer » ou sur le menu Chrome → Installer l'application.</p><button id="installBtn2">Installer l'app</button></div>
-<section class="section" id="musique"><h2>🎵 Mon morceau</h2><div class="track"><img class="cover" src="assets/msi-le-baz.jpg" alt="Pochette"><h3>Msi le baz adjatokpa (Remix)</h3><small>MSI le baz</small><div style="clear:both"></div><audio controls preload="metadata"><source src="assets/track.mp3" type="audio/mpeg">Ton navigateur ne peut pas lire cet audio.</audio></div></section>
-<section class="section"><h2>📲 Mon univers</h2><div class="grid"><div class="tile"><b>🎬 Clips</b><span>Retrouve bientôt les clips de MSI le baz.</span></div><div class="tile"><b>📸 Photos</b><span>Photos, affiches et coulisses.</span></div><div class="tile"><b>🎤 Concerts</b><span>Dates et événements à venir.</span></div><div class="tile"><b>🔗 Partager</b><span>Partage l'application avec tes proches.</span></div></div></section>
-</main><footer class="footer">© MSI le baz — première version</footer>
-<script>
-let deferredPrompt;
-const b1=document.getElementById('installBtn'),b2=document.getElementById('installBtn2'),box=document.getElementById('installBox');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;b1.style.display='block';box.classList.add('show')});
-async function install(){if(!deferredPrompt){box.classList.add('show');return}deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;b1.style.display='none'}
-b1.onclick=install;b2.onclick=install;
-if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
-</script></body></html>
+  <header><div class="brand">MSI <span>LE BAZ</span></div></header>
+  <main>
+    <section class="hero">
+      <img class="poster" src="msi-le-baz.jpg" alt="Pochette MSI le baz">
+    </section>
+    
+    <section class="intro">
+      <h1>MSI le baz</h1>
+      <p>Bienvenue sur mon application musicale officielle.</p>
+      <!-- Lecteur audio corrigé avec preload pour éviter le bug 0:00 -->
+      <audio controls preload="metadata" src="piste.mp3"></audio>
+    </section>
+
+    <div id="installBox" class="install">
+      <p><strong>Installer l'application</strong></p>
+      <button id="installBtn">Installer</button>
+    </div>
+
+    <section class="section" id="musique">
+      <h2>🎵 Actualités</h2>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; MSI le baz - Tous droits réservés</p>
+  </footer>
+
+  <script>
+    let deferredPrompt;
+    const installBox = document.getElementById('installBox');
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBox.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBox.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("Service Worker enregistré avec succès !"))
+        .catch((err) => console.log("Erreur Service Worker :", err));
+    }
+  </script>
+</body>
+  </html>
+  
