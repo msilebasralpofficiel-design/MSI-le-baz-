@@ -1,1 +1,20 @@
-{"name":"MSI le baz","short_name":"MSI le baz","start_url":"./","display":"standalone","background_color":"#050a14","theme_color":"#07101f","description":"Application musicale de MSI le baz.","icons":[{"src":"assets/msi-le-baz.jpg","sizes":"1024x1536","type":"image/jpeg","purpose":"any"}]}
+{
+  "name": "MSI le baz",
+  "short_name": "MSI le baz",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050a14",
+  "theme_color": "#07101f",
+  "icons": [
+    {
+      "src": "msi-le-baz.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "msi-le-baz.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
