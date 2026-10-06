@@ -32,7 +32,6 @@
     .player-info h3{margin:0;font-size:0.95rem;color:var(--text);}
     .player-info p{margin:2px 0;font-size:0.8rem;color:var(--gray);}
     .player-info span{font-size:0.75rem;color:var(--gray);}
-    .play-btn-circle{background:var(--gold);color:#000;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;border:none;cursor:pointer;flex-shrink:0;}
 
     /* Quick Grid Actions */
     .quick-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;}
@@ -51,9 +50,14 @@
     .track-details{flex-grow:1;}
     .track-details h4{margin:0;font-size:0.9rem;}
     .track-details p{margin:2px 0;font-size:0.75rem;color:var(--gray);}
-    .track-details span{font-size:0.7rem;color:var(--gray);}
-    .action-btns{display:flex;align-items:center;gap:8px;}
-    .small-play{background:var(--gold);color:#000;border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+
+    /* Add Music Button Box */
+    .add-music-box{background:linear-gradient(135deg, #1a2942, #0d1728);border:2px dashed var(--gold);padding:14px;border-radius:12px;text-align:center;cursor:pointer;}
+    .add-music-box input[type="file"]{display:none;}
+    .add-btn-label{color:var(--gold);font-weight:bold;font-size:0.9rem;cursor:pointer;display:block;}
+
+    /* Dynamic Playlist Container */
+    #playlistContainer{display:flex;flex-direction:column;gap:12px;width:100%;}
 
     /* Install Box */
     .install{display:none;background:var(--card);border:1px solid var(--gold);padding:12px;border-radius:12px;text-align:center;}
@@ -92,6 +96,14 @@
       <button id="installBtn">Installer</button>
     </div>
 
+    <!-- 🎵 Bouton magique pour ajouter un morceau depuis le téléphone -->
+    <div class="add-music-box">
+      <label class="add-btn-label">
+        ➕ Ajouter un morceau depuis mon téléphone
+        <input type="file" id="audioFileInput" accept="audio/*" multiple>
+      </label>
+    </div>
+
     <!-- Morceau à la une -->
     <div class="featured-card">
       <span class="badge-une">Morceau à la une</span>
@@ -102,70 +114,17 @@
           <p>MC Le Baz</p>
           <span>⏱️ 02:49</span>
         </div>
-        <button class="play-btn-circle" onclick="document.getElementById('audio1').play()">▶</button>
       </div>
-      <audio id="audio1" controls preload="metadata" src="track.mp3" style="width:100%; margin-top:4px;"></audio>
+      <audio controls preload="metadata" src="track.mp3" style="width:100%; margin-top:4px;"></audio>
     </div>
 
-    <!-- Quick Grid (Grid Actions) -->
-    <div class="quick-grid">
-      <a href="#musiques" class="quick-item">
-        <i>🎵</i>
-        <span>Mes morceaux</span>
-      </a>
-      <a href="#clips" class="quick-item">
-        <i>🎬</i>
-        <span>Mes clips</span>
-      </a>
-      <a href="#photos" class="quick-item">
-        <i>🖼️</i>
-        <span>Photos</span>
-      </a>
-      <a href="#concerts" class="quick-item">
-        <i>📅</i>
-        <span>Concerts</span>
-      </a>
-      <a href="#partager" class="quick-item" onclick="if(navigator.share) navigator.share({title:'MSI le baz', url:window.location.href})">
-        <i>🔗</i>
-        <span>Partager l'app</span>
-      </a>
-      <a href="#contact" class="quick-item">
-        <i>👤</i>
-        <span>Contact</span>
-      </a>
-    </div>
-
-    <!-- Section Dernier morceau -->
+    <!-- Section Liste des morceaux dynamiques et ajoutés -->
     <div class="section-header">
-      <h2><span>🎵</span> Dernier morceau</h2>
-      <a href="#" class="see-all">Voir tout &gt;</a>
+      <h2><span>🎵</span> Mes morceaux</h2>
     </div>
 
-    <div class="track-row">
-      <img src="msi-le-baz.jpg" alt="Pochette">
-      <div class="track-details">
-        <h4>Msi le baz adjatokpa (Remix)</h4>
-        <p>MC Le Baz</p>
-        <span>⏱️ 02:49</span>
-      </div>
-      <audio controls preload="metadata" src="track.mp3" style="width:110px; height:32px;"></audio>
-    </div>
-
-    <!-- Section Nouveautés -->
-    <div class="section-header" style="margin-top:8px;">
-      <h2><span>🔥</span> Nouveautés</h2>
-      <a href="#" class="see-all">Voir tout &gt;</a>
-    </div>
-
-    <div class="track-row">
-      <img src="msi-le-baz.jpg" alt="Pochette">
-      <div class="track-details">
-        <h4>Bientôt disponible</h4>
-        <p>MC Le Baz</p>
-        <span>⏱️ 00:00</span>
-      </div>
-      <button class="small-play">▶</button>
-    </div>
+    <!-- Conteneur où s'ajouteront tes nouveaux morceaux -->
+    <div id="playlistContainer"></div>
 
   </div>
 
@@ -193,6 +152,35 @@
   </nav>
 
   <script>
+    // Gestion de l'ajout de fichiers audio depuis le téléphone
+    const audioFileInput = document.getElementById('audioFileInput');
+    const playlistContainer = document.getElementById('playlistContainer');
+
+    audioFileInput.addEventListener('change', (event) => {
+      const files = event.target.files;
+      for (let file of files) {
+        const audioUrl = URL.createObjectURL(file);
+        const trackCard = document.createElement('div');
+        trackCard.className = 'featured-card';
+        trackCard.style.background = 'var(--card)';
+        
+        trackCard.innerHTML = `
+          <span class="badge-une" style="background:#1a2942; color:var(--gold);">Nouveau son</span>
+          <div class="player-row">
+            <img src="msi-le-baz.jpg" class="player-thumb" alt="Pochette">
+            <div class="player-info">
+              <h3>${file.name.replace(/\.[^/.]+$/, "")}</h3>
+              <p>MC Le Baz</p>
+              <span>📁 Local</span>
+            </div>
+          </div>
+          <audio controls preload="metadata" src="${audioUrl}" style="width:100%; margin-top:4px;"></audio>
+        `;
+        playlistContainer.appendChild(trackCard);
+      }
+    });
+
+    // PWA Installation logic
     let deferredPrompt;
     const installBox = document.getElementById('installBox');
     const installBtn = document.getElementById('installBtn');
@@ -221,5 +209,5 @@
     }
   </script>
 </body>
-        </html>
-              
+  </html>
+  
